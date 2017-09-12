@@ -1,0 +1,4 @@
+user,role
+john,ROLE_ADMIN
+john,ROLE_SUPER_USER
+test,ROLE_USER

@@ -1,0 +1,155 @@
+<html>
+<head>
+
+<title>Schedule to Reddit</title>
+<link rel="shortcut icon" type="image/png" th:href="@{/resources/favicon.png}"/>
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css"/>
+<link rel="stylesheet" th:href="@{/resources/autocomplete.css}"/>
+
+<style type="text/css">
+.btn.disabled{
+background-color: #ddd;
+border-color: #ddd;
+}
+
+.btn.disabled:hover{
+background-color: #ddd;
+border-color: #ddd;
+}
+</style>
+</head>
+<body>
+<div th:include="header"/>
+
+<div class="container">
+<h1>Post to Reddit</h1>
+<form action="submit" method="post" role="form" data-toggle="validator">
+<div class="row">
+<div class="form-group">
+    <label class="col-sm-3">Title</label>
+    <span class="col-sm-9"><input name="title" placeholder="title" class="form-control" data-minlength="3" required="required"/></span>
+</div>
+<br/><br/>
+<div class="form-group">
+    <label class="col-sm-3">URL</label>
+    <span class="col-sm-9"><input name="url" type="url" placeholder="url" class="form-control" data-minlength="3" required="required"/></span>
+</div>
+<br/><br/>  
+<div class="form-group">
+    <label class="col-sm-3">Subreddit</label>
+    <span class="col-sm-9"><input id="sr" name="subreddit" placeholder="Subreddit (e.g. kitten)" class="form-control" required="required" data-minlength="3"/></span>
+</div>
+<br/><br/>
+<div>
+<label class="col-sm-3">Send replies to my inbox</label> 
+ <span class="col-sm-9">
+<input  type="checkbox" name="sendReplies" value="true"/> </span> 
+</div>
+<br/>
+<br/>
+<div>
+<span class="col-sm-2"><a href="#" class="btn btn-default" onclick="checkIfAlreadySubmitted()">Check if already submitted</a></span>
+<span class="col-sm-1"></span>
+<span class=" col-sm-9"><span id="checkResult" class="alert alert-info" style="display:none"></span></span>
+</div>
+<br/><br/>
+ 
+    <div th:if="${iden != null}">
+    <input type="hidden" name="iden" value="${iden}"/>
+    
+	<div class="form-group">   
+	    <label class="col-sm-3">Captcha</label>
+	    <span class="col-sm-9"><input name="captcha" placeholder="captcha" class="form-control"/></span>
+	</div>
+	<br/><br/>
+    <img src="http://www.reddit.com/captcha/${iden}" alt="captcha" width="200"/>
+    </div>
+    <br/><br/>
+    <span class="col-sm-3"><button id="submitBut" type="submit" class="btn btn-primary">Post</button></span>
+   </div>
+</form>
+<div>
+
+</div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+<script th:src="@{/resources/validator1.js}"></script>
+<script>
+  $(function() {
+    $( "#sr" ).autocomplete({
+      source: "api/subredditAutoComplete"
+    });
+    
+    $("input[name='url'],input[name='subreddit']").focus(function (){
+    	$("#checkResult").hide();
+    });
+    
+    loadPref();
+    
+  });
+  
+  function loadPref(){
+      $.get("api/user/preference", function (data){
+    	  $('*[name="subreddit"]').val(data.subreddit);
+    	  if(data.sendReplies == true){
+              $('*[name="sendReplies"]')[0].checked=true;
+          }
+      });
+  }
+</script>
+  
+<script>
+/*<![CDATA[*/
+function checkIfAlreadySubmitted(){
+    var url = $("input[name='url']").val();
+    var sr = $("input[name='subreddit']").val();
+    if(url.length >2 && sr.length > 2){
+        $.get("api/posts",{url: url, sr: sr}, function(data){
+        	var result = JSON.parse(data);
+        	if(result.length == 0){
+        		$("#checkResult").show().html("Not submitted before");
+        	}else{
+                $("#checkResult").show().html('Already submitted <b><a target="_blank" href="http://www.reddit.com'+result[0].data.permalink+'">here</a></b>');
+        	}
+        });
+    }
+    else{
+        $("#checkResult").show().html("Too short url and/or subreddit");
+    }
+}           
+/*]]>*/          
+</script>
+
+<script>
+/*<![CDATA[*/
+$("#submitBut").click(function(event) {
+    event.preventDefault();
+    submitPost();
+});
+
+function submitPost(){
+    var data = {};
+    $('form').serializeArray().map(function(x){data[x.name] = x.value;});
+    $.ajax({
+        url: "api/posts",
+        data: JSON.stringify(data),
+        type: 'POST',
+        contentType:'application/json'
+            
+    }).done(function(data) {
+    	if(data.length < 2){
+    		showAlertMessage(data[0]);
+        }
+        else{
+            window.location.href="submissionResponse?msg="+data[0]+"&url="+data[1];
+        }
+    })
+    .fail(function(error) {
+    	showAlertMessage(error.responseText);
+    }); 
+}
+/*]]>*/  
+</script>
+</body>
+</html>

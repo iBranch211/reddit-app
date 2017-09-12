@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Schedule to Reddit</title>
+<link rel="shortcut icon" type="image/png" th:href="@{/resources/favicon.png}"/>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css"/>
+</head>
+<body>
+
+<div th:include="header (menuType=signupOnly)"></div>
+
+<div class="jumbotron">
+  <div class="container">
+    <h1>Schedule to Reddit</h1>
+
+    <h3>
+    <br/>
+    To Reddit is a simple system that allows you to <mark>schedule out your Reddit posts.</mark> 
+    <br/>
+    <br/>
+    The goal is to give your posts the best chance to do well and get picked up by the community. 
+    <br/>
+    </h3>
+    <p>
+    <br/>
+    There are some advanced features as well - if you're posting something really important. 
+    <br/>
+    For example - if your post doesn't get traction - <b>have the system remove it and post it again in a few days</b>. 
+    Not to be abused.
+    </p>
+  </div>
+</div>
+<br/>
+
+<div class="container">
+
+<div class="alert alert-info" th:if="${param.containsKey('msg')}" th:text="${param.msg[0]}">
+
+</div>
+<div class="alert alert-danger" th:if="${param.containsKey('error')}">
+Invalid username or password
+</div>
+<div class="alert alert-warning" th:if="${param.containsKey('invalidSession')}">
+Session timeout
+</div>
+
+<form method="post" th:action="@{/j_spring_security_check}" class="form-horizontal col-sm-6">
+  <div class="form-group">
+    <label for="username" class="control-label col-sm-3">Username</label>
+    <div class="col-sm-9"><input class="form-control" id="username" name="username" placeholder="Username"/></div>
+  </div>
+  <div class="form-group">
+    <label for="password" class="control-label col-sm-3">Password</label>
+   <div class="col-sm-9"> <input type="password" class="form-control" id="password" name="password" placeholder="Password"/></div>
+  </div>  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <a href="forgetPassword">Forgot Password?</a><button type="submit" class="btn btn-default pull-right">Log In</button>
+  <br/><br/>
+  <br/><br/>
+    <a th:href="@{/signup}" class="btn btn-primary pull-right">Sign Up</a>
+</form>
+</div>
+</body>
+</html>

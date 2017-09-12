@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <changeSet author="ESSAM (generated)" id="1446027355234-1">
+        <addColumn tableName="Post">
+            <column name="checkAfterInterval" type="int4">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="ESSAM (generated)" id="1446027355234-2">
+        <addColumn tableName="Preference">
+            <column name="checkAfterInterval" type="int4">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="ESSAM (generated)" id="1446027355234-3">
+        <addColumn tableName="Post">
+            <column name="submitAfterInterval" type="int4">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="ESSAM (generated)" id="1446027355234-4">
+        <addColumn tableName="Preference">
+            <column name="submitAfterInterval" type="int4">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="ESSAM (generated)" id="1446027355234-5">
+        <dropColumn columnName="timeinterval" tableName="post"/>
+    </changeSet>
+    <changeSet author="ESSAM (generated)" id="1446027355234-6">
+        <dropColumn columnName="timeinterval" tableName="preference"/>
+    </changeSet>
+    <changeSet author="ESSAM (generated)" id="1446027355234-7">
+        <addNotNullConstraint columnDataType="boolean" columnName="enabled" tableName="APP_USER"/>
+    </changeSet>
+    <changeSet author="ESSAM (generated)" id="1446027355234-8">
+        <addDefaultValue columnDataType="bigint" columnName="id" defaultValueComputed="nextval('app_user_id_seq'::regclass)" tableName="APP_USER"/>
+        <addAutoIncrement columnDataType="bigint" columnName="id" tableName="APP_USER"/>
+    </changeSet>
+    <changeSet author="ESSAM (generated)" id="1446027355234-9">
+        <addDefaultValue columnDataType="bigint" columnName="id" defaultValueComputed="nextval('myfeed_id_seq'::regclass)" tableName="MyFeed"/>
+        <addAutoIncrement columnDataType="bigint" columnName="id" tableName="MyFeed"/>
+    </changeSet>
+    <changeSet author="ESSAM (generated)" id="1446027355234-10">
+        <addDefaultValue columnDataType="bigint" columnName="id" defaultValueComputed="nextval('passwordresettoken_id_seq'::regclass)" tableName="PasswordResetToken"/>
+        <addAutoIncrement columnDataType="bigint" columnName="id" tableName="PasswordResetToken"/>
+    </changeSet>
+    <changeSet author="ESSAM (generated)" id="1446027355234-11">
+        <addDefaultValue columnDataType="bigint" columnName="id" defaultValueComputed="nextval('post_id_seq'::regclass)" tableName="Post"/>
+        <addAutoIncrement columnDataType="bigint" columnName="id" tableName="Post"/>
+    </changeSet>
+    <changeSet author="ESSAM (generated)" id="1446027355234-12">
+        <addDefaultValue columnDataType="bigint" columnName="id" defaultValueComputed="nextval('preference_id_seq'::regclass)" tableName="Preference"/>
+        <addAutoIncrement columnDataType="bigint" columnName="id" tableName="Preference"/>
+    </changeSet>
+    <changeSet author="ESSAM (generated)" id="1446027355234-13">
+        <addDefaultValue columnDataType="bigint" columnName="id" defaultValueComputed="nextval('privilege_id_seq'::regclass)" tableName="Privilege"/>
+        <addAutoIncrement columnDataType="bigint" columnName="id" tableName="Privilege"/>
+    </changeSet>
+    <changeSet author="ESSAM (generated)" id="1446027355234-14">
+        <addDefaultValue columnDataType="bigint" columnName="id" defaultValueComputed="nextval('role_id_seq'::regclass)" tableName="Role"/>
+        <addAutoIncrement columnDataType="bigint" columnName="id" tableName="Role"/>
+    </changeSet>
+    <changeSet author="ESSAM (generated)" id="1446027355234-15">
+        <addDefaultValue columnDataType="bigint" columnName="id" defaultValueComputed="nextval('submissionresponse_id_seq'::regclass)" tableName="SubmissionResponse"/>
+        <addAutoIncrement columnDataType="bigint" columnName="id" tableName="SubmissionResponse"/>
+    </changeSet>
+    <changeSet author="ESSAM (generated)" id="1446027355234-16">
+        <addDefaultValue columnDataType="bigint" columnName="id" defaultValueComputed="nextval('verificationtoken_id_seq'::regclass)" tableName="VerificationToken"/>
+        <addAutoIncrement columnDataType="bigint" columnName="id" tableName="VerificationToken"/>
+    </changeSet>
+    <changeSet author="ESSAM (generated)" id="1446027355234-17">
+        <addNotNullConstraint columnDataType="boolean" columnName="sendEmailReplies" tableName="Preference"/>
+        <dropDefaultValue columnDataType="boolean" columnName="sendEmailReplies" tableName="Preference"/>
+    </changeSet>
+</databaseChangeLog>

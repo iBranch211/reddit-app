@@ -1,0 +1,177 @@
+<html>
+<head>
+
+<title>Schedule to Reddit</title>
+<link rel="shortcut icon" type="image/png" th:href="@{/resources/favicon.png}"/>
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css"/>
+
+
+</head>
+<body>
+<div th:include="header"/>
+
+<div class="container">
+<h1>All Users</h1>
+<br/>
+<br/>
+<table class="table table-bordered">
+<thead>
+<tr>
+<th>Username</th>
+<th>Scheduled Posts Count</th>
+<th>Roles</th>
+<th>Actions</th>
+</tr>
+</thead>
+
+</table>
+</div>
+<div class="modal fade" id="myModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Modify User Roles</h4>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" name="id" id="userIndex"/>
+        <div id="allRoles"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" onclick="modifyUserRoles()">Save changes</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<script src="https://cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/plug-ins/1.10.7/integration/bootstrap/3/dataTables.bootstrap.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+
+<script>
+/*<![CDATA[*/
+           
+var loadedData = [];
+      
+$(function(){
+    $('table').dataTable( {
+        "processing": true,
+        "searching":false,
+        "columnDefs": [
+                       { "name": "username",   "targets": 0},
+                       { "name": "scheduledPostsCount",   "targets": 1},
+                       { "targets": 2, "data": "roles","width":"20%","orderable": false,
+                           "render": function ( data, type, full, meta ) {
+                               return extractRolesName(data);
+                             }
+                       },
+                       { "targets": 3, "data": "id",
+                            "render": function ( data, type, full, meta ) {
+                                return '<a href="#" class="btn btn-warning" onclick="showEditModal('+meta.row+')">Modify User Roles</a>'
+                                +' <a href="#" class="btn btn-default" onclick="triggerEnabled('+meta.row+')">'
+                                +((full.enabled)?'Disable':'Enable')+'</a>';
+                              }}
+                     ],
+                     "columns": [
+                                 { "data": "username" },
+                                 { "data": "scheduledPostsCount" }
+                             ],
+        "serverSide": true,
+        "ajax": function(data, callback, settings) {
+            $.get('api/users', {
+                size: data.length,
+                page: (data.start/data.length),
+                sortDir: data.order[0].dir,
+                sort: data.columns[data.order[0].column].name
+            }, function(res,textStatus, request) {
+                loadedData = res;
+                var pagingInfo = request.getResponseHeader('PAGING_INFO');
+                var total = pagingInfo.split(",")[0].split("=")[1];
+                callback({
+                    recordsTotal: total,
+                    recordsFiltered: total,
+                    data: res
+                });
+            });
+        },
+        "createdRow": function ( row, data, index ) {
+            if (!data.enabled) {
+                $('td', row).addClass('active');
+            }
+        }
+    } );
+});
+
+function extractRolesName(roles){
+	var result ="";
+	$.each(roles, function( index, role ) {
+        result+= role.name+" ";
+    });
+	return result;
+}
+
+var allRoles;
+function showEditModal(row){
+	$("#userIndex").val(row);
+	$('#allRoles').html("");
+	var roleNames = extractRolesName(loadedData[row].roles);
+	$.get("api/users/roles", function(data){
+		allRoles = data;
+        $.each(data, function( index, role ) {
+        	if(roleNames.indexOf(role.name) != -1){
+                $('#allRoles').append('<input type="checkbox" name="roleIds" value="'+role.id+'" checked/> '+role.name+'<br/>')
+        	} else{
+        		$('#allRoles').append('<input type="checkbox" name="roleIds" value="'+role.id+'" /> '+role.name+'<br/>')
+        	}
+        });
+        $("#myModal").modal();
+    });
+}
+
+function modifyUserRoles(){
+	var roles = [];
+    $.each($("input[name='roleIds']"), function(index,role){  
+    	if($(this).is(':checked')){
+    	    roles.push(allRoles[index]);
+    	}
+    }); 
+    if(roles.length == 0){
+    	showAlertMessage("Error, at least select one role");
+    	return;
+    }
+    
+    var user = loadedData[$("#userIndex").val()];
+    user.roles = roles;
+    $.ajax({
+        url: "api/users/"+user.id,
+        data: JSON.stringify(user),
+        type: 'PUT',
+        contentType:'application/json'
+            
+    }).done(function() {
+        window.location.href="users";
+    })
+    
+}
+
+function triggerEnabled(row){
+	var user = loadedData[row];
+	user.enabled = !user.enabled;
+    $.ajax({
+        url: "api/users/"+user.id,
+        data: JSON.stringify(user),
+        type: 'PUT',
+        contentType:'application/json'
+            
+    }).done(function() {
+        window.location.href="users";
+    })
+     
+}
+
+/*]]>*/
+</script>
+</body>
+</html>

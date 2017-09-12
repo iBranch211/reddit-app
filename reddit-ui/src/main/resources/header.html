@@ -1,0 +1,91 @@
+<div>
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" th:href="@{/}">Schedule to Reddit</a>
+    </div>
+    
+    <div th:switch="${menuType}">
+    
+    	<div th:case="signupOnly" class="navbar-text navbar-right">
+	        <a th:href="@{/signup}">Sign Up</a>
+	        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	    </div>
+	    
+	    <div th:case="loginOnly" class="navbar-text navbar-right">
+	        <a th:href="@{/}">Log In</a>
+	        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	    </div>
+	    
+	    <div th:case="profileOnly" class="navbar-text navbar-right"> Hi, 
+	        <b><a th:href="@{/profile}" sec:authentication="principal.username">Bob</a></b>&nbsp;&nbsp;&nbsp;
+	        <a th:href="@{/logout}">Log Out</a>&nbsp;&nbsp;&nbsp;
+	    </div>
+	    
+	    <div th:case="*">
+		    <p class="navbar-text navbar-right"> Hi, 
+		        <b><a th:href="@{/profile}" sec:authentication="principal.username">Bob</a></b>&nbsp;&nbsp;&nbsp;
+		        <a th:href="@{/logout}">Log Out</a>&nbsp;&nbsp;&nbsp;
+		    </p>
+		        
+		    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+		      <ul class="nav navbar-nav">
+		        <li><a th:href="@{/feeds}">My RSS Feeds</a></li>
+		        <li><a th:href="@{/scheduledPosts}">My Scheduled Posts</a></li>
+		        <li><a th:href="@{/post}">Post to Reddit</a></li>
+		        <li><a th:href="@{/postSchedule}">Schedule Post to Reddit</a></li>
+		        <li><a href="mailto:toreddit@gmail.com">Contact Us</a></li>
+		      </ul>
+		      
+		    </div><!-- /.navbar-collapse -->
+	    </div>
+    </div>
+    
+  </div><!-- /.container-fluid -->
+</nav>
+
+
+<div id="errorAlert" class="alert alert-danger" style="display:none;margin:10px;">
+<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+  <span aria-hidden="true">x</span>
+</button>
+<span id="alertContent"></span>
+</div>
+
+<div id="loading-layer" style="position:absolute;left:0;top:0;width:100%;height:100%;background-color:rgba(230,230,230,0.5);display:none;z-index:2000;">
+<div id="loading-image" style="position:absolute;left:45%;top:45%;">
+<img th:src="@{/resources/spin.gif}"/>
+</div>
+</div>
+
+<script th:src="@{/resources/jquery.min.js}"></script>
+<script>
+$.ajaxSetup({
+    timeout: 3000
+});
+
+$(document).ajaxStart(function() {
+    $("#loading-layer").show();
+    $("#errorAlert").hide();
+    $(".btn").attr("disabled", true);
+});
+$(document).ajaxComplete(function() {
+	$("#loading-layer").hide();
+    $(".btn").removeAttr("disabled");
+});
+
+$(document).ajaxError(function(event, jqXHR, ajaxSettings, error) {
+	if(jqXHR.responseJSON.message){
+		showAlertMessage(jqXHR.responseJSON.message);
+	}else{
+		showAlertMessage("Sorry, Error Occurred");
+	}
+	
+});
+
+function showAlertMessage(msg){
+	$("#alertContent").html(msg);
+	$("#errorAlert").show();
+}
+</script>
+</div>

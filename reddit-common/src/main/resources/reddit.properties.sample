@@ -1,0 +1,5 @@
+reddit.clientID=
+reddit.clientSecret=
+reddit.accessTokenUri=https://www.reddit.com/api/v1/access_token
+reddit.userAuthorizationUri=https://www.reddit.com/api/v1/authorize
+reddit.redirectUri=http://localhost:8080/reddit-scheduler/redditLogin
