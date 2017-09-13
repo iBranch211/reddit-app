@@ -69,15 +69,11 @@
         <!-- util -->
         <rome.version>1.7.4</rome.version>
         <xml-apis.version>1.4.01</xml-apis.version>
-        <javax-activation.version>1.1.1</javax-activation.version>
         <javax-mail.version>1.4.7</javax-mail.version>
-        <javax-validation.version>1.1.0.Final</javax-validation.version>
         <mahout.version>0.9</mahout.version>
         <xstream.version>1.4.10</xstream.version>
         <guava.version>23.0</guava.version>
         <modelmapper.version>0.7.8</modelmapper.version>
-        <httpcore.version>4.4.6</httpcore.version>
-        <httpclient.version>4.5.3</httpclient.version>
         <webapp-runner.version>7.0.57.2</webapp-runner.version>
                         
         <!-- persistence -->
@@ -87,7 +83,6 @@
         
         <!-- test -->
         <junit-dep.version>4.11</junit-dep.version>
-        <junit.version>4.12</junit.version>
         <rest-assured.version>3.0.3</rest-assured.version>
         <gatling.version>2.3.0</gatling.version>
                         
