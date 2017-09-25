@@ -18,7 +18,7 @@ public class RoleQueryController {
     @Autowired
     private IRoleQueryService roleService;
 
-    @PreAuthorize("hasRole('USER_READ_PRIVILEGE')")
+    @PreAuthorize("hasAuthority('USER_READ_PRIVILEGE')")
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
     public List<Role> getRolesList() {

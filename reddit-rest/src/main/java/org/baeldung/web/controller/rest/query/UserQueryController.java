@@ -32,7 +32,7 @@ public class UserQueryController {
     @Autowired
     private ModelMapper modelMapper;
 
-    @PreAuthorize("hasRole('USER_READ_PRIVILEGE')")
+    @PreAuthorize("hasAuthority('USER_READ_PRIVILEGE')")
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
     public List<UserQueryDto> getUsersList(@RequestParam(value = "page", required = false, defaultValue = "0") final int page, @RequestParam(value = "size", required = false, defaultValue = "10") final int size,

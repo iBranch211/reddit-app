@@ -71,7 +71,7 @@ public class UserCommandController {
 
     // admin
 
-    @PreAuthorize("hasRole('USER_WRITE_PRIVILEGE')")
+    @PreAuthorize("hasAuthority('USER_WRITE_PRIVILEGE')")
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.OK)
     public void updateUser(@RequestBody final UserUpdateCommandDto userDto) {
