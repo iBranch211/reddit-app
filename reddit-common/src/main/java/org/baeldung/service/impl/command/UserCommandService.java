@@ -2,6 +2,7 @@ package org.baeldung.service.impl.command;
 
 import java.util.TimeZone;
 import java.util.UUID;
+import java.util.regex.Pattern;
 
 import org.baeldung.persistence.dao.PasswordResetTokenRepository;
 import org.baeldung.persistence.dao.PreferenceRepository;
@@ -16,6 +17,7 @@ import org.baeldung.persistence.model.VerificationToken;
 import org.baeldung.service.OnRegistrationCompleteEvent;
 import org.baeldung.service.command.IUserCommandService;
 import org.baeldung.web.exceptions.InvalidOldPasswordException;
+import org.baeldung.web.exceptions.InvalidUsername;
 import org.baeldung.web.exceptions.UserNotFoundException;
 import org.baeldung.web.exceptions.UsernameAlreadyExistsException;
 import org.slf4j.Logger;
@@ -34,6 +36,8 @@ import com.google.common.collect.Sets;
 public class UserCommandService implements IUserCommandService {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
+
+    private static final String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 
     @Autowired
     private UserRepository userRepository;
@@ -68,10 +72,20 @@ public class UserCommandService implements IUserCommandService {
         if (user != null) {
             throw new UsernameAlreadyExistsException("Username already exists");
         }
+
+        Preference pref = preferenceRepository.findByEmail(email);
+        if (pref != null) {
+            throw new UsernameAlreadyExistsException("Email already exists");
+        }
+
+        if ((username.length() < 3) || (email.length() < 3) || !isValidEmail(email)) {
+            throw new InvalidUsername("Invalid username");
+        }
+
         user = new User();
         user.setUsername(username);
         user.setPassword(passwordEncoder.encode(password));
-        final Preference pref = new Preference();
+        pref = new Preference();
         pref.setTimezone(TimeZone.getDefault().getID());
         pref.setEmail(email);
         preferenceRepository.save(pref);
@@ -141,4 +155,9 @@ public class UserCommandService implements IUserCommandService {
         return email;
     }
 
+    private boolean isValidEmail(final String email) {
+        return Pattern.compile(EMAIL_PATTERN)
+            .matcher(email)
+            .matches();
+    }
 }

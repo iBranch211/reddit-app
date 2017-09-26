@@ -9,6 +9,7 @@ import org.baeldung.web.exceptions.FeedServerException;
 import org.baeldung.web.exceptions.InvalidDateException;
 import org.baeldung.web.exceptions.InvalidOldPasswordException;
 import org.baeldung.web.exceptions.InvalidResubmitOptionsException;
+import org.baeldung.web.exceptions.InvalidUsername;
 import org.baeldung.web.exceptions.UserNotFoundException;
 import org.baeldung.web.exceptions.UsernameAlreadyExistsException;
 import org.springframework.http.HttpHeaders;
@@ -83,6 +84,13 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler impleme
 
     @ExceptionHandler({ UsernameAlreadyExistsException.class })
     public ResponseEntity<Object> handleUsernameAlreadyExists(final RuntimeException ex, final WebRequest request) {
+        logger.error("400 Status Code" + ex.getLocalizedMessage());
+        final ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, ex);
+        return new ResponseEntity<Object>(apiError, new HttpHeaders(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler({ InvalidUsername.class })
+    public ResponseEntity<Object> handleInvalidUsername(final RuntimeException ex, final WebRequest request) {
         logger.error("400 Status Code" + ex.getLocalizedMessage());
         final ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, ex);
         return new ResponseEntity<Object>(apiError, new HttpHeaders(), HttpStatus.BAD_REQUEST);
