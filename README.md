@@ -12,3 +12,6 @@ To run the project, you first need to modify (`src/main/resources/*.properties`)
   - **Description**: Write the description of your app (optional).
   - **About url**: url of your application (optional).
   - **Redirect uri**: Very Important, the callback url to be redirected to after obtaining access token [http://localhost:8080/reddit-scheduler/redditLogin](#)
+
+### Relevant Articles:
+- [Schedule Post to Reddit with Spring](http://www.baeldung.com/spring-schedule-posts-to-reddit)
