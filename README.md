@@ -16,3 +16,4 @@ To run the project, you first need to modify (`src/main/resources/*.properties`)
 ### Relevant Articles:
 - [Schedule Post to Reddit with Spring](http://www.baeldung.com/spring-schedule-posts-to-reddit)
 - [Post a Link to the Reddit API](http://www.baeldung.com/spring-security-oauth-post-to-reddit)
+- [Authenticating with Reddit OAuth2 and Spring Security](http://www.baeldung.com/spring-security-oauth2-authentication-with-reddit)
