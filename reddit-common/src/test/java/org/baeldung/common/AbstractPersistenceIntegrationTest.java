@@ -7,8 +7,10 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.baeldung.persistence.model.IEntity;
 import org.hamcrest.Matchers;
@@ -25,7 +27,7 @@ public abstract class AbstractPersistenceIntegrationTest<T extends IEntity> {
     @Test
     public final void givenEntityDoesNotExist_whenEntityIsRetrieved_thenNoEntityIsReceived() {
         // When
-        final T createdEntity = getApi().findOne(IDUtil.randomPositiveLong());
+        final T createdEntity = getApi().findById(IDUtil.randomPositiveLong()).get();
 
         // Then
         assertNull(createdEntity);
@@ -34,25 +36,25 @@ public abstract class AbstractPersistenceIntegrationTest<T extends IEntity> {
     @Test
     public void givenEntityExists_whenEntityIsRetrieved_thenNoExceptions() {
         final T existingEntity = persistNewEntity();
-        getApi().findOne(existingEntity.getId());
+        getApi().findById(existingEntity.getId());
     }
 
     @Test
     public void givenEntityDoesNotExist_whenEntityIsRetrieved_thenNoExceptions() {
-        getApi().findOne(IDUtil.randomPositiveLong());
+        getApi().findById(IDUtil.randomPositiveLong());
     }
 
     @Test
     public void givenEntityExists_whenEntityIsRetrieved_thenTheResultIsNotNull() {
         final T existingEntity = persistNewEntity();
-        final T retrievedEntity = getApi().findOne(existingEntity.getId());
-        assertNotNull(retrievedEntity);
+        final Optional<T> retrievedEntity = getApi().findById(existingEntity.getId());
+        assertTrue(retrievedEntity.isPresent());
     }
 
     @Test
     public void givenEntityExists_whenEntityIsRetrieved_thenEntityIsRetrievedCorrectly() {
         final T existingEntity = persistNewEntity();
-        final T retrievedEntity = getApi().findOne(existingEntity.getId());
+        final T retrievedEntity = getApi().findById(existingEntity.getId()).get();
         assertEquals(existingEntity, retrievedEntity);
     }
 
@@ -119,7 +121,7 @@ public abstract class AbstractPersistenceIntegrationTest<T extends IEntity> {
     public void whenEntityIsCreated_thenEntityIsRetrievable() {
         final T existingEntity = persistNewEntity();
 
-        assertNotNull(getApi().findOne(existingEntity.getId()));
+        assertTrue(getApi().findById(existingEntity.getId()).isPresent());
     }
 
     @Test
@@ -173,7 +175,7 @@ public abstract class AbstractPersistenceIntegrationTest<T extends IEntity> {
         change(existingEntity);
         getApi().save(existingEntity);
 
-        final T updatedEntity = getApi().findOne(existingEntity.getId());
+        final T updatedEntity = getApi().findById(existingEntity.getId()).get();
 
         // Then
         assertEquals(existingEntity, updatedEntity);

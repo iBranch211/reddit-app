@@ -47,7 +47,7 @@ class MyFeedCommandService implements IMyFeedCommanndService {
 
     @Override
     public void deleteFeedById(final Long feedId) {
-        myFeedRepository.delete(feedId);
+        myFeedRepository.deleteById(feedId);
     }
 
     // Non API

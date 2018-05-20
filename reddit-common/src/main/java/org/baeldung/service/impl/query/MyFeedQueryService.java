@@ -36,7 +36,7 @@ public class MyFeedQueryService implements IMyFeedQueryService {
 
     @Override
     public List<MyFeed> getFeedsByUser(final User user, final int page, final int size, final String sortDir, final String sort) {
-        final PageRequest pageReq = new PageRequest(page, size, Sort.Direction.fromString(sortDir), sort);
+        final PageRequest pageReq = PageRequest.of(page, size, Sort.Direction.fromString(sortDir), sort);
         final Page<MyFeed> feeds = myFeedRepository.findByUser(user, pageReq);
         return feeds.getContent();
     }
@@ -48,12 +48,12 @@ public class MyFeedQueryService implements IMyFeedQueryService {
 
     @Override
     public MyFeed findFeedById(final Long feedId) {
-        return myFeedRepository.findOne(feedId);
+        return myFeedRepository.findById(feedId).get();
     }
 
     @Override
     public List<FeedArticle> getArticlesFromFeed(final Long feedId) {
-        final MyFeed feed = myFeedRepository.findOne(feedId);
+        final MyFeed feed = myFeedRepository.findById(feedId).get();
         return getArticlesFromSite(feed);
     }
 

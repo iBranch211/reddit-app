@@ -135,7 +135,7 @@ public class UserCommandService implements IUserCommandService {
 
     @Override
     public void updateUser(final User user) {
-        final User oldUser = userRepository.findOne(user.getId());
+        final User oldUser = userRepository.findById(user.getId()).get();
         oldUser.setEnabled(user.isEnabled());
         oldUser.setRoles(user.getRoles());
         System.out.println(oldUser);

@@ -35,13 +35,13 @@
 
 <div class="container">
 
-<div class="alert alert-info" th:if="${param.containsKey('msg')}" th:text="${param.msg[0]}">
+<div class="alert alert-info" th:if="${#httpServletRequest.getParameter('msg')}" th:text="${#httpServletRequest.getParameter('msg')}">
 
 </div>
-<div class="alert alert-danger" th:if="${param.containsKey('error')}">
+<div class="alert alert-danger" th:if="${#httpServletRequest.getParameter('error')}">
 Invalid username or password
 </div>
-<div class="alert alert-warning" th:if="${param.containsKey('invalidSession')}">
+<div class="alert alert-warning" th:if="${#httpServletRequest.getParameter('invalidSession')}">
 Session timeout
 </div>
 

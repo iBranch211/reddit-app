@@ -25,7 +25,7 @@ public final class CsvDataLoader {
             final CsvSchema bootstrapSchema = CsvSchema.emptySchema().withHeader();
             final CsvMapper mapper = new CsvMapper();
             final File file = new ClassPathResource(fileName).getFile();
-            final MappingIterator<T> readValues = mapper.reader(type).with(bootstrapSchema).readValues(file);
+            final MappingIterator<T> readValues = mapper.readerFor(type).with(bootstrapSchema).readValues(file);
             return readValues.readAll();
         } catch (final Exception e) {
             logger.error("Error ocurred while loading object list from file " + fileName, e);
@@ -39,7 +39,7 @@ public final class CsvDataLoader {
             final CsvSchema bootstrapSchema = CsvSchema.emptySchema().withSkipFirstDataRow(true);
             mapper.enable(CsvParser.Feature.WRAP_AS_ARRAY);
             final File file = new ClassPathResource(fileName).getFile();
-            final MappingIterator<String[]> readValues = mapper.reader(String[].class).with(bootstrapSchema).readValues(file);
+            final MappingIterator<String[]> readValues = mapper.readerFor(String[].class).with(bootstrapSchema).readValues(file);
             return readValues.readAll();
         } catch (final Exception e) {
             logger.error("Error ocurred while loading many to many relationship from file " + fileName, e);
