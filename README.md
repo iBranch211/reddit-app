@@ -15,11 +15,7 @@ To run the project, you first need to modify (`src/main/resources/*.properties`)
 
 ### Relevant Articles:
 - [Schedule Post to Reddit with Spring](http://www.baeldung.com/spring-schedule-posts-to-reddit)
-- [Post a Link to the Reddit API](http://www.baeldung.com/spring-security-oauth-post-to-reddit)
 - [Simple AngularJS Front-End for a REST API](http://www.baeldung.com/angular-js-rest-api)
 - [Use Liquibase to Safely Evolve Your Database Schema](http://www.baeldung.com/liquibase-refactor-schema-of-java-app)
-- [Simple AngularJS Front-End for a REST API](http://www.baeldung.com/angular-js-rest-api)
-- [Use Liquibase to Safely Evolve Your Database Schema](http://www.baeldung.com/liquibase-refactor-schema-of-java-app)
-- [Schedule Post to Reddit with Spring](http://www.baeldung.com/spring-schedule-posts-to-reddit)
 - [Post a Link to the Reddit API](http://www.baeldung.com/spring-security-oauth-post-to-reddit)
 - [Authenticating with Reddit OAuth2 and Spring Security](http://www.baeldung.com/spring-security-oauth2-authentication-with-reddit)
