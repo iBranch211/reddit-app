@@ -16,6 +16,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
+import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
 import org.springframework.web.context.request.RequestContextListener;
@@ -23,7 +24,7 @@ import org.springframework.web.context.support.AnnotationConfigWebApplicationCon
 import org.springframework.web.servlet.DispatcherServlet;
 
 @SpringBootApplication
-public class Application extends org.springframework.boot.web.servlet.support.SpringBootServletInitializer {
+public class Application extends SpringBootServletInitializer {
     @Bean
     public ServletRegistrationBean frontendServlet() {
         final AnnotationConfigWebApplicationContext dispatcherContext = new AnnotationConfigWebApplicationContext();

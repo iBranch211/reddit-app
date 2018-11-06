@@ -64,7 +64,6 @@
         <dependency>
             <groupId>org.springframework.security.oauth</groupId>
             <artifactId>spring-security-oauth2</artifactId>
-            <version>${spring-oauth.version}</version>
         </dependency>
         
         <!-- web -->
@@ -89,7 +88,7 @@
 
         <dependency>
             <groupId>org.thymeleaf</groupId>
-            <artifactId>thymeleaf-spring5</artifactId>
+            <artifactId>thymeleaf-spring4</artifactId>
         </dependency>
 
         <dependency>
@@ -165,6 +164,7 @@
         <dependency>
             <groupId>io.rest-assured</groupId>
             <artifactId>rest-assured</artifactId>
+            <version>${rest-assured.version}</version>
             <scope>test</scope>
         </dependency>
 
