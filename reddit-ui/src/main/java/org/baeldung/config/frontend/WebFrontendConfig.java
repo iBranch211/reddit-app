@@ -16,14 +16,14 @@ import org.springframework.web.servlet.config.annotation.DefaultServletHandlerCo
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 @Configuration
 @EnableWebMvc
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @ComponentScan({ "org.baeldung.web.controller.general" })
-public class WebFrontendConfig extends WebMvcConfigurerAdapter {
+public class WebFrontendConfig implements WebMvcConfigurer {
 
     @Bean
     public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
@@ -45,7 +45,7 @@ public class WebFrontendConfig extends WebMvcConfigurerAdapter {
 
     @Override
     public void addViewControllers(final ViewControllerRegistry registry) {
-        super.addViewControllers(registry);
+        WebMvcConfigurer.super.addViewControllers(registry);
         registry.addViewController("/index");
         registry.addViewController("/home");
         registry.addViewController("/adminHome");
@@ -67,7 +67,7 @@ public class WebFrontendConfig extends WebMvcConfigurerAdapter {
         final Jackson2ObjectMapperBuilder builder = new Jackson2ObjectMapperBuilder();
         builder.indentOutput(true).dateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm"));
         messageConverters.add(new MappingJackson2HttpMessageConverter(builder.build()));
-        super.configureMessageConverters(messageConverters);
+        WebMvcConfigurer.super.configureMessageConverters(messageConverters);
     }
 
     @Override

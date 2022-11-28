@@ -26,7 +26,7 @@ public class ScheduledPostQueryService implements IScheduledPostQueryService {
 
     @Override
     public List<Post> getPostsList(final User user, final int page, final int size, final String sortDir, final String sort) {
-        final PageRequest pageReq = new PageRequest(page, size, Sort.Direction.fromString(sortDir), sort);
+        final PageRequest pageReq = PageRequest.of(page, size, Sort.Direction.fromString(sortDir), sort);
         final Page<Post> posts = postRepository.findByUser(user, pageReq);
         return posts.getContent();
     }

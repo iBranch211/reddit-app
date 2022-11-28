@@ -28,7 +28,7 @@ public class ResourceSecurityService {
     public boolean isRssFeedOwner(final Long feedId) {
         final UserPrincipal userPrincipal = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         final User user = userPrincipal.getUser();
-        final MyFeed feed = feedRepository.findOne(feedId);
+        final MyFeed feed = feedRepository.findById(feedId).get();
         return feed.getUser().getId().equals(user.getId());
     }
 }

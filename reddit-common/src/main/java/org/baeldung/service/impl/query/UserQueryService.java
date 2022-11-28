@@ -44,7 +44,7 @@ public class UserQueryService implements IUserQueryService {
     @Override
     @Transactional
     public List<User> getUsersList(final int page, final int size, final String sortDir, final String sort) {
-        final PageRequest pageReq = new PageRequest(page, size, Sort.Direction.fromString(sortDir), sort);
+        final PageRequest pageReq = PageRequest.of(page, size, Sort.Direction.fromString(sortDir), sort);
         return userRepository.findAll(pageReq).getContent();
     }
 
